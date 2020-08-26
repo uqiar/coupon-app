@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -7,6 +7,8 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Tooltip from '@material-ui/core/Tooltip';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import { deleteCoupon } from '../api/api'
 const useStyles = makeStyles({
   card: {
@@ -22,6 +24,7 @@ const useStyles = makeStyles({
 
 export default function FeaturedPost(props) {
   const classes = useStyles();
+  const [onLoading,setOnLoading]=useState(false)
   const { coupon } = props;
   const dateToYMD=(date)=> {
     var d = date.getDate();
@@ -30,9 +33,13 @@ export default function FeaturedPost(props) {
     return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
 }
 const onDeleteCoupon=async(id)=>{
+  if(onLoading)
+  return
   try {
+    setOnLoading(true)
     const DeletedCoupon = await deleteCoupon(id)
     if (DeletedCoupon) {
+      setOnLoading(false)
       props.onGetCoupons()
     }
   } catch (err) {
@@ -55,7 +62,7 @@ const onDeleteCoupon=async(id)=>{
                 {coupon.coupon}
               </Typography>
               <Tooltip onClick={()=>onDeleteCoupon(coupon.id)} title="Delete Coupon">
-            <DeleteIcon/>
+            {onLoading?<CircularProgress/> :<DeleteIcon/>}
             </Tooltip>
             </CardContent>
           </div>
