@@ -23,6 +23,3 @@ yarn-debug.log*
 yarn-error.log*
 
 /src/assets/sass/light-bootstrap-dashboard.css
-
-
-.env
