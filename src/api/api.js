@@ -3,7 +3,7 @@ import resolve from './resolve';
 
 let apiBase = process.env.REACT_APP_API_BASEURL;
 let apiBaseUrl = apiBase + "/api"
-
+//
 
 const createUser = async (data) => {
     return await resolve(axios.post(`${apiBaseUrl}/register`, data).then(res => res.data));
